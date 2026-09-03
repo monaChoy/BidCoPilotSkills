@@ -2,6 +2,27 @@
 
 面向中国招投标场景的可复用标书技能库。项目把招标材料识别、标书设计、Markdown 初稿编制、独立检查和评分核对串成一条可交接的工作链。
 
+## 仓库
+
+- GitHub：https://github.com/monaChoy/BidCoPilotSkills
+- Git：https://github.com/monaChoy/BidCoPilotSkills.git
+
+## 给 Agent 的安装提示词
+
+把下面这段原样发给 Agent，让它从本仓库安装技能包：
+
+```text
+请从 https://github.com/monaChoy/BidCoPilotSkills.git 安装 BidCoPilotSkills 标书技能包。
+
+安装要求：
+1. 克隆或拉取该仓库的最新内容。
+2. 把仓库中每个技能目录（含 SKILL.md 及同目录配套文件）安装到通用 Agent 技能目录 ~/.agents/skills/<技能名>/，或当前运行环境约定的等价目录。
+3. 不要安装到某个具体投标项目目录。本仓库是技能维护源，多个项目应复用同一套技能。
+4. 需要安装的技能：招标项目建档、标书目录整理、标书spec、标书任务拆分、标书撰写、标书检查、标书评分。
+5. 安装后核对每个技能目录都有 SKILL.md；招标项目建档还需包含 AGENTS模板.md。
+6. 安装完成后列出实际安装路径。
+```
+
 ## 技能链
 
 ```text
