@@ -1,5 +1,5 @@
 ---
-name: 招标项目建档
+name: bid-project-setup
 description: 初始化或更新投标项目AGENTS.md，确认招标来源、有效澄清和事实素材。用于新项目或来源实质变化；生成报告和章节文件不触发重新建档。
 ---
 

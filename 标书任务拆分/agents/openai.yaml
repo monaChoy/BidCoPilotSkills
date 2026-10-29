@@ -1,0 +1,3 @@
+interface:
+  display_name: "标书任务拆分"
+  short_description: "将标书设计拆分为可交接的章节写作任务"

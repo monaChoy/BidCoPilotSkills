@@ -1,0 +1,3 @@
+interface:
+  display_name: "标书评分"
+  short_description: "提取评分基准，核对评分证据并按需模拟评分"

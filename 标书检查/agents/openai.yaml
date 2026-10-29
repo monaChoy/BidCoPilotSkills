@@ -1,0 +1,3 @@
+interface:
+  display_name: "标书检查"
+  short_description: "独立核查标书、证件有效期、图片真实性和一致性"

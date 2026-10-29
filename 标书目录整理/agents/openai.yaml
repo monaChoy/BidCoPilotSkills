@@ -1,0 +1,3 @@
+interface:
+  display_name: "标书目录整理"
+  short_description: "提取招标要求与清单，建立来源覆盖和标书目录"
