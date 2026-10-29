@@ -8,3 +8,6 @@
 .fseventsd/
 .TemporaryItems/
 .VolumeIcon.icns
+
+# 本地测试输出
+tmp/
