@@ -1,0 +1,3 @@
+interface:
+  display_name: "图片痕迹检查"
+  short_description: "检查文件图片中的 PS、AI 生成和局部编辑线索，输出证据报告"
