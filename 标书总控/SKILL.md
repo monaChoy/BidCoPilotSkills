@@ -20,7 +20,8 @@ description: >-
 | 要定策略、章节设计、内容边界、三级蓝图 | 目录可用或可补齐 | `bid-spec` |
 | 要分批/多人写、要任务清单 | 设计已可执行 | `bid-task-breakdown` |
 | 要写/续写/补章节正文；或 `撰写进度.md` 有「阻塞」待补材料/决定 | 范围已明确（可无目录/spec） | `bid-writing`（阻塞时先补材料或做决定；有未确认蓝图且用户要按蓝图写时先 `bid-spec`） |
-| 要审标、合规、废标风险、证件有效期、明暗标身份、整改复核；或最新检查报告状态为「未完成」 | 有投标稿（建档已完成） | `bid-review`（未完成则续查） |
+| 要审标、合规、废标风险、证件有效期、文件痕迹、明暗标身份、整改复核；或最新检查报告状态为「未完成」 | 有投标稿（建档已完成） | `bid-review`（未完成则续查） |
+| 只查文件元数据、隐藏修订、嵌入对象、造价 XML 或多文件痕迹对照 | 有明确的文件范围 | `file-trace-review` |
 | 只查扫描件或图片的 PS、拼接、改字、AI 生成/重绘线索 | 有 PDF、DOCX 或独立图片 | `image-authenticity-review` |
 | 要结构核对、正文评分检查或明确要求估分 | 有评分办法可依 | `bid-scoring` |
 | 只问「从哪开始 / 下一步」 | 任意 | 本技能给出路由后停，或经用户确认后调用推荐技能 |
@@ -41,7 +42,8 @@ description: >-
 | 分批或多人交接 | … → spec → 任务拆分 → 撰写 | 局部任务完成 ≠ 全套完成 |
 | 核对评分或估分 | 建档 → 评分 | 估分须用户明确要求 |
 | 只查规范引用或前后矛盾 | 建档 → 检查（限定单项范围） | 由 `bid-review` 按单项执行；单项结果不代表全套已检查 |
-| 只查图片真实性 | 图片真实性检查 | 由 `image-authenticity-review` 独立执行；标准/完整标书检查会自动调用该分支 |
+| 只查文件痕迹 | 文件痕迹检查 | 由 `file-trace-review` 独立执行；所有标书检查模式及续查均按范围调用 |
+| 只查图片真实性 | 图片真实性检查 | 由 `image-authenticity-review` 独立执行；标书检查统一经文件痕迹总技能调用 |
 | 要 Word/PDF 排版出稿 | 告知边界 | 本包不产出 docx/pdf 排版；停在 Markdown 与检查报告 |
 
 交付给用户时用简短列表复述：当前阶段、推荐技能名、为何选它、可选前置、明确不做的事。
@@ -73,6 +75,9 @@ description: >-
     ├─ bid-task-breakdown  → 写作任务清单.md
     ├─ bid-writing         → 正文/*.md + 撰写进度.md（读 writing-quality）
     ├─ bid-review          → 标书检查报告-*.md（只读；含身份与明暗标）
+    │  └─ file-trace-review → 文件痕迹报告.md + 机器摘要
+    │     ├─ document-trace-review → DOCX/PDF/XML manifest 与 summary
+    │     └─ image-authenticity-review → 图片报告、清单及证据图
     └─ bid-scoring         → 标书评分报告-*.md；结构/正文核对；明确要求时才估分
 ```
 

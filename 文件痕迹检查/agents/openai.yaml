@@ -1,0 +1,3 @@
+interface:
+  display_name: "文件痕迹检查"
+  short_description: "汇总文档、造价 XML 和图片痕迹，生成统一证据报告"

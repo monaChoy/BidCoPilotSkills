@@ -1,0 +1,3 @@
+interface:
+  display_name: "文档痕迹检查"
+  short_description: "脚本提取 DOCX、PDF、XML 元数据、隐藏内容和文件指纹"
