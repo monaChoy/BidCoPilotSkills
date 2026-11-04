@@ -18,8 +18,12 @@ REQUIRED_FIELDS = ("kind", "input_path", "input_sha256", "scope", "tool_contract
 
 
 def sha256_path(path):
+    # Python 3.9+ 兼容（勿用仅 3.11+ 的 hashlib.file_digest）
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def load_state(path, allow_missing=False):

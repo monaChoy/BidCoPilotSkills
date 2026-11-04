@@ -100,7 +100,7 @@ def extract(source, output):
             issues.append({"page_index_1based": page_number, "status": "error",
                            "error": f"{type(error).__name__}: {error}"})
     with source.open("rb") as stream:
-        source_hash = hashlib.file_digest(stream, "sha256").hexdigest()
+        source_hash = hashlib.sha256(stream.read()).hexdigest()
     manifest = {"pdf": str(source), "pdf_sha256": source_hash,
                 "pypdf_version": pypdf.__version__, "pages": len(reader.pages),
                 "scope": "page_content_Do_and_nested_Forms",

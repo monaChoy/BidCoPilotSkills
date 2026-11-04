@@ -94,8 +94,12 @@ def load_document_summary(trace_report):
 
 
 def sha256_path(path):
+    # Python 3.9+ 兼容（勿用仅 3.11+ 的 hashlib.file_digest）
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def trace_result():
@@ -177,6 +181,41 @@ def validate_trace(main_report, main_text, overall_status):
     return result, issues, warnings
 
 
+ANCHOR_ONLY_RE = re.compile(
+    r"^(?:证据[:：]\s*)?(?:招标|本册|投标)?(?:P\d{3,5}|T\d+R\d+)(?:\s*[、,，]\s*(?:P\d{3,5}|T\d+R\d+))*[.。]?$",
+    re.IGNORECASE,
+)
+HAS_FILENAME_RE = re.compile(r"《[^》]+》|\.(?:docx|pdf|xlsx|xlsm|doc|png|jpg)\b", re.IGNORECASE)
+
+
+def warn_opaque_evidence(main_text):
+    """启发式警告：问题记录证据列疑似仅有提取锚点。不 fail，避免误伤历史报告。"""
+    warnings = []
+    problems = section(main_text, "问题记录")
+    if not problems:
+        return warnings
+    for line in problems.splitlines():
+        if not line.strip().startswith("|"):
+            continue
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) < 5:
+            continue
+        if cells[0] in {"编号", "---"} or set(cells[0]) <= {"-"}:
+            continue
+        # 常见列：编号|状态|严重级别|类别|证据与说明|...
+        evidence = cells[4] if len(cells) >= 5 else ""
+        if not evidence or evidence in {"证据与说明", "证据", "—", "-"}:
+            continue
+        compact = re.sub(r"\s+", "", evidence)
+        if ANCHOR_ONLY_RE.match(compact) or (
+            re.search(r"(?:P\d{3,5}|T\d+R\d+)", evidence, re.I)
+            and not HAS_FILENAME_RE.search(evidence)
+            and not re.search(r"物理页|工作表|第\s*\d+\s*项", evidence)
+        ):
+            warnings.append(f"问题记录证据疑似不可读（仅提取锚或缺文件名）：{cells[0]} → {evidence[:80]}")
+    return warnings
+
+
 def narrative_claims(text):
     claims = []
     for sentence in re.split(r"[。；\n]+", text):
@@ -254,6 +293,7 @@ def main():
     issues = [] if overall else ["主报告缺少有效整体状态"]
     trace, trace_issues, warnings = validate_trace(args.report, main_text, overall)
     issues.extend(trace_issues)
+    warnings.extend(warn_opaque_evidence(main_text))
     claims = []
     handoff_status = ""
     if args.handoff:

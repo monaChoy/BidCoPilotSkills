@@ -28,7 +28,7 @@ def main():
     if not 0 <= args.saturation_threshold <= 255:
         parser.error("saturation-threshold 必须为 0 到 255")
     with args.image.open("rb") as stream:
-        digest = hashlib.file_digest(stream, "sha256").hexdigest()
+        digest = hashlib.sha256(stream.read()).hexdigest()
     results = []
     with Image.open(args.image) as image:
         if getattr(image, "n_frames", 1) != 1:

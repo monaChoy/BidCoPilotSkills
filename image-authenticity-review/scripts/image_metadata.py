@@ -53,7 +53,7 @@ def jpeg_header(image):
 
 def inspect(path):
     with path.open("rb") as stream:
-        digest = hashlib.file_digest(stream, "sha256").hexdigest()
+        digest = hashlib.sha256(stream.read()).hexdigest()
     with Image.open(path) as image:
         header = jpeg_header(image) if image.format == "JPEG" else None
         image.load()

@@ -44,8 +44,11 @@ def local_name(tag):
 
 
 def sha256_path(path):
+    h = hashlib.sha256()
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
 
 
 def sha256_bytes(data):
